@@ -166,7 +166,7 @@ def getStoryline_airavwiki(number, debug, proxies, verify):
 
 def getStoryline_58avgo(number, debug, proxies, verify):
     try:
-        url = 'http://58avgo.com/cn/index.aspx' + secrets.choice([
+        url = 'https://airav.io/cn/index.aspx' + secrets.choice([
                 '', '?status=3', '?status=4', '?status=7', '?status=9', '?status=10', '?status=11', '?status=12',
                 '?status=1&Sort=Playon', '?status=1&Sort=dateupload', 'status=1&Sort=dateproduce'
         ]) # 随机选一个，避免网站httpd日志中单个ip的请求太过单一
@@ -204,12 +204,14 @@ def getStoryline_58avgo(number, debug, proxies, verify):
     return ''
 
 
-def getStoryline_avno1(number, debug, proxies, verify):  #获取剧情介绍 从avno1.cc取得
+def getStoryline_avno1(number, debug, proxies, verify):  #获取剧情介绍
     try:
-        site = secrets.choice(['avno1.cc','1768av.club','2nine.net','av999.tv',
-            'hotav.biz','iqq2.xyz','javhq.tv',
-            'www.hdsex.cc','www.porn18.cc','www.xxx18.cc',])
-        url = f'http://{site}/cn/search.php?kw_type=key&kw={number}'
+        site = secrets.choice([
+            'https://avno1.club','https://1768av.club','https://2nine.net',
+            'https://av999.club','https://hotav.club','https://porn18.cc','https://xxx18.org',
+            'https://javhq.tv', 'https://hdsex.asia'
+            ])
+        url = f'{site}/cn/search.php?kw_type=key&kw={number}'
         lx = fromstring(get_html_by_scraper(url, proxies=proxies, verify=verify))
         descs = lx.xpath('//div[@class="type_movie"]/div/ul/li/div/@data-description')
         titles = lx.xpath('//div[@class="type_movie"]/div/ul/li/div/a/h3/text()')
@@ -234,7 +236,7 @@ def getStoryline_avno1(number, debug, proxies, verify):  #获取剧情介绍 从
 
 def getStoryline_avno1OLD(number, debug, proxies, verify):  #获取剧情介绍 从avno1.cc取得
     try:
-        url = 'http://www.avno1.cc/cn/' + secrets.choice(['usercenter.php?item=' +
+        url = 'https://avno1.club/cn/' + secrets.choice(['usercenter.php?item=' +
                 secrets.choice(['pay_support', 'qa', 'contact', 'guide-vpn']),
                 '?top=1&cat=hd', '?top=1', '?cat=hd', 'porn', '?cat=jp', '?cat=us', 'recommend_category.php'
         ]) # 随机选一个，避免网站httpd日志中单个ip的请求太过单一

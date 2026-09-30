@@ -67,7 +67,8 @@ class Javbus(Parser):
                     newnumber = "DV-1195_2010-10-08"
                 self.detailurl = 'https://www.javbus.com/' + newnumber
                 self.htmlcode = self.getHtml(self.detailurl)
-            except:
+            except Exception as e:
+                print(f'请求{self.detailurl}出错:{str(e)}')
                 mirror_url = "https://www." + secrets.choice([
                     'buscdn.art',
                     ]) + "/"
@@ -79,7 +80,8 @@ class Javbus(Parser):
             self.extraheader = {"Referer": self.detailurl}
             result = self.dictformat(htmltree)
             return result
-        except:
+        except Exception as ex:
+            print(f'请求{self.detailurl}异常:{str(ex)}')
             self.searchUncensored(number)
 
     def dictformat(self, htmltree):

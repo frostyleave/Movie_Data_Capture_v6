@@ -356,12 +356,6 @@ class Config:
         except:
             return ""
 
-    def update_check(self) -> bool:
-        try:
-            return self.conf.getboolean("update", "update_check")
-        except ValueError:
-            self._exit("update:update_check")
-
     def sources(self) -> str:
         return self.conf.get("priority", "website")
 
@@ -489,17 +483,13 @@ class Config:
         conf.set(sec4, "number_uppercase", "0")
         conf.set(sec4, "number_regexs", "")
 
-        sec5 = "update"
-        conf.add_section(sec5)
-        conf.set(sec5, "update_check", "1")
-
         sec6 = "priority"
         conf.add_section(sec6)
         conf.set(sec6, "website", "airav,javbus,javdb,fanza,xcity,mgstage,fc2,fc2club,avsox,jav321,xcity")
 
         sec7 = "escape"
         conf.add_section(sec7)
-        conf.set(sec7, "literals", "\()/")  # noqa
+        conf.set(sec7, "literals", r"\()/")  # noqa
         conf.set(sec7, "folders", "failed, JAV_output")
 
         sec8 = "debug_mode"

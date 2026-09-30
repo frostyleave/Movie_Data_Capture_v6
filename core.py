@@ -435,7 +435,7 @@ def print_files(path, leak_word, c_word, naming_rule, part, cn_sub, json_data, f
             if old_nfo:
                 try:
                     xur = old_nfo.xpath('//userrating/text()')[0]
-                    if isinstance(xur, str) and re.match('\d+\.\d+|\d+', xur.strip()):
+                    if isinstance(xur, str) and re.match(r'\d+\.\d+|\d+', xur.strip()):
                         print(f"  <userrating>{xur.strip()}</userrating>", file=code)
                 except:
                     pass
@@ -455,7 +455,7 @@ def print_files(path, leak_word, c_word, naming_rule, part, cn_sub, json_data, f
                     try:
                         for rtag in ('rating', 'criticrating'):
                             xur = old_nfo.xpath(f'//{rtag}/text()')[0]
-                            if isinstance(xur, str) and re.match('\d+\.\d+|\d+', xur.strip()):
+                            if isinstance(xur, str) and re.match(r'\d+\.\d+|\d+', xur.strip()):
                                 print(f"  <{rtag}>{xur.strip()}</{rtag}>", file=code)
                         f_rating = old_nfo.xpath(f"//ratings/rating[@name='javdb']/value/text()")[0]
                         uc = old_nfo.xpath(f"//ratings/rating[@name='javdb']/votes/text()")[0]
@@ -566,15 +566,14 @@ def add_to_pic(pic_path, img_pic, size, count, mode):
     # 再找py脚本所在路径的图片
     elif os.path.isfile(os.path.join(os.path.dirname(os.path.realpath(__file__)), pngpath)):
         mark_pic_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), pngpath)
-    # 如果没有本地图片才通过网络下载
     else:
-        mark_pic_path = BytesIO(
-            get_html("https://raw.githubusercontent.com/yoshiko2/AV_Data_Capture/master/" + pngpath,
-                     return_type="content"))
+        print(f'[-]Error: watermark image: {pngpath} not found !')
+        return
+        
     img_subt = Image.open(mark_pic_path)
     scroll_high = int(img_pic.height / size)
     scroll_wide = int(scroll_high * img_subt.width / img_subt.height)
-    img_subt = img_subt.resize((scroll_wide, scroll_high), Image.ANTIALIAS)
+    img_subt = img_subt.resize((scroll_wide, scroll_high), Image.Resampling.LANCZOS)
     r, g, b, a = img_subt.split()  # 获取颜色通道，保持png的透明性
     # 封面四个角的位置
     pos = [
@@ -746,8 +745,8 @@ def core_main_no_net_op(movie_path, number):
     part = ''
     path = str(Path(movie_path).parent)
 
-    if re.search('[-_]CD\d+', movie_path, re.IGNORECASE):
-        part = re.findall('[-_]CD\d+', movie_path, re.IGNORECASE)[0].upper()
+    if re.search(r'[-_]CD\d+', movie_path, re.IGNORECASE):
+        part = re.findall(r'[-_]CD\d+', movie_path, re.IGNORECASE)[0].upper()
         multi = True
     if re.search(r'[-_]C(\.\w+$|-\w+)|\d+ch(\.\w+$|-\w+)', movie_path,
                  re.I) or '中文' in movie_path or '字幕' in movie_path or ".chs" in movie_path or '.cht' in movie_path:
@@ -893,9 +892,9 @@ def core_main(movie_path, number_th, oCC, specified_source=None, specified_url=N
     imagecut = json_data.get('imagecut')
     tag = json_data.get('tag')
     # =======================================================================判断-C,-CD后缀
-    if re.search('[-_]CD\d+', movie_path, re.IGNORECASE):
+    if re.search(r'[-_]CD\d+', movie_path, re.IGNORECASE):
         multi_part = True
-        part = re.findall('[-_]CD\d+', movie_path, re.IGNORECASE)[0].upper()
+        part = re.findall(r'[-_]CD\d+', movie_path, re.IGNORECASE)[0].upper()
     if re.search(r'[-_]C(\.\w+$|-\w+)|\d+ch(\.\w+$|-\w+)', movie_path,
                  re.I) or '中文' in movie_path or '字幕' in movie_path:
         cn_sub = True

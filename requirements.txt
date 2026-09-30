@@ -1,16 +1,12 @@
 --index-url https://pypi.tuna.tsinghua.edu.cn/simple
 
-requests
-dlib-bin
-Click
-numpy
-face-recognition-models
-lxml
-beautifulsoup4
-pillow==9.5.0
-cloudscraper
-pysocks==1.7.1
-urllib3==1.25.11
-certifi
-MechanicalSoup
-opencc-python-reimplemented
+requests==2.34.2
+lxml==6.1.1
+Pillow==12.3.0
+beautifulsoup4==4.15.0
+urllib3==2.6.2
+
+face-recognition-models==0.3.0
+cloudscraper==1.2.71
+MechanicalSoup==1.4.0
+opencc-python-reimplemented==0.1.7
